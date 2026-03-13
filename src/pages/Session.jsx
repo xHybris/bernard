@@ -15,50 +15,6 @@ function formatToday() {
   return new Date().toISOString().split('T')[0]
 }
 
-function formatDateFrench(isoDate) {
-  const date = new Date(isoDate)
-  if (Number.isNaN(date.getTime())) {
-    return ''
-  }
-  return date.toLocaleDateString('fr-FR')
-}
-
-function parseFrenchDate(inputValue) {
-  const value = inputValue.trim()
-  const datePattern = /^(\d{1,2})[/.\-](\d{1,2})(?:[/.\-](\d{4}))?$/
-  const match = value.match(datePattern)
-  if (!match) {
-    return null
-  }
-
-  const day = Number(match[1])
-  const month = Number(match[2])
-  const year = match[3] ? Number(match[3]) : new Date().getFullYear()
-
-  if (
-    !Number.isInteger(day) ||
-    !Number.isInteger(month) ||
-    !Number.isInteger(year) ||
-    month < 1 ||
-    month > 12 ||
-    day < 1 ||
-    day > 31
-  ) {
-    return null
-  }
-
-  const candidate = new Date(year, month - 1, day)
-  if (
-    candidate.getFullYear() !== year ||
-    candidate.getMonth() !== month - 1 ||
-    candidate.getDate() !== day
-  ) {
-    return null
-  }
-
-  return `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`
-}
-
 function parseNumber(value) {
   if (typeof value !== 'string') return Number(value)
   return Number(value.replace(',', '.'))
@@ -109,7 +65,7 @@ export default function Session() {
       const normalized = normalizeSession(editingSession)
       return {
         mode: 'manual',
-        dateInput: formatDateFrench(normalized.date),
+        dateInput: normalized.date,
         selectedExercises: normalized.exercises,
         rating: normalized.rating,
         comment: normalized.comment,
@@ -120,7 +76,7 @@ export default function Session() {
     if (!isEditMode && templateFromQuery) {
       return {
         mode: 'template',
-        dateInput: formatDateFrench(formatToday()),
+        dateInput: formatToday(),
         selectedExercises: templateFromQuery.exercises.map((exercise) => ({
           ...exercise,
           sets: [
@@ -138,7 +94,7 @@ export default function Session() {
 
     return {
       mode: isEditMode ? 'manual' : null,
-      dateInput: formatDateFrench(formatToday()),
+      dateInput: formatToday(),
       selectedExercises: [],
       rating: 3,
       comment: '',
@@ -243,9 +199,8 @@ export default function Session() {
 
   const saveSession = () => {
     setFormError('')
-    const parsedDate = parseFrenchDate(dateInput)
-    if (!parsedDate) {
-      setFormError('Date invalide. Utilise jj/mm ou jj/mm/aaaa.')
+    if (!dateInput) {
+      setFormError('Sélectionne une date.')
       return
     }
 
@@ -262,7 +217,7 @@ export default function Session() {
     }
 
     const payload = {
-      date: parsedDate,
+      date: dateInput,
       exercises: payloadExercises,
       rating,
       comment: comment.trim(),
@@ -326,10 +281,7 @@ export default function Session() {
         <div className="form-group">
           <label>Date</label>
           <input
-            type="text"
-            lang="fr-FR"
-            inputMode="numeric"
-            placeholder="jj/mm/aaaa"
+            type="date"
             value={dateInput}
             onChange={(event) => setDateInput(event.target.value)}
           />
