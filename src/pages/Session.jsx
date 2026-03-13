@@ -230,11 +230,22 @@ export default function Session() {
   }
 
   const saveSession = () => {
-    const payloadExercises = toPayloadExercises()
     setFormError('')
     const parsedDate = parseFrenchDate(dateInput)
     if (!parsedDate) {
       setFormError('Date invalide. Utilise jj/mm ou jj/mm/aaaa.')
+      return
+    }
+
+    if (selectedExercises.length === 0) {
+      setFormError('Ajoute au moins un exercice.')
+      return
+    }
+
+    const payloadExercises = toPayloadExercises()
+
+    if (selectedExercises.length > 0 && payloadExercises.length === 0) {
+      setFormError('Remplis le poids et les reps d\u2019au moins une série.')
       return
     }
 
@@ -254,7 +265,7 @@ export default function Session() {
     addSession(payload)
     setLastSavedExercises(payloadExercises)
 
-    if (profile.dontAskSaveTemplate || payloadExercises.length === 0) {
+    if (profile.dontAskSaveTemplate) {
       navigate('/')
       return
     }

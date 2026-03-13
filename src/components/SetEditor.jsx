@@ -1,18 +1,32 @@
-import { useMemo, useState } from 'react'
+import { useCallback, useState } from 'react'
 import { MinusCircle } from 'lucide-react'
 import './SetEditor.css'
 
-const emptySet = {
-  weight: '',
-  reps: '',
-}
-
 export default function SetEditor({ sets, onChange }) {
   const [setCountInput, setSetCountInput] = useState(String(Math.max(sets.length, 1)))
-  const [defaultWeightInput, setDefaultWeightInput] = useState(String(sets[0]?.weight ?? ''))
-  const [defaultRepsInput, setDefaultRepsInput] = useState(String(sets[0]?.reps ?? ''))
+  const [defaultWeight, setDefaultWeight] = useState(String(sets[0]?.weight ?? ''))
+  const [defaultReps, setDefaultReps] = useState(String(sets[0]?.reps ?? ''))
 
-  const currentSetCount = useMemo(() => Math.max(sets.length, 1), [sets.length])
+  const buildSets = useCallback((count, weight, reps) => {
+    const parsed = Number(count)
+    const safeCount = Number.isFinite(parsed) ? Math.max(1, Math.floor(parsed)) : 1
+    return Array.from({ length: safeCount }, () => ({ weight, reps }))
+  }, [])
+
+  const handleCountChange = (value) => {
+    setSetCountInput(value)
+    onChange(buildSets(value, defaultWeight, defaultReps))
+  }
+
+  const handleWeightChange = (value) => {
+    setDefaultWeight(value)
+    onChange(buildSets(setCountInput, value, defaultReps))
+  }
+
+  const handleRepsChange = (value) => {
+    setDefaultReps(value)
+    onChange(buildSets(setCountInput, defaultWeight, value))
+  }
 
   const updateSet = (index, key, value) => {
     const updated = sets.map((setItem, itemIndex) =>
@@ -21,38 +35,28 @@ export default function SetEditor({ sets, onChange }) {
     onChange(updated)
   }
 
-  const applyPreset = () => {
-    const parsedCount = Number(setCountInput)
-    const safeCount = Number.isFinite(parsedCount) ? Math.max(1, Math.floor(parsedCount)) : 1
-    const nextSets = Array.from({ length: safeCount }, () => ({
-      ...emptySet,
-      weight: defaultWeightInput,
-      reps: defaultRepsInput,
-    }))
-    onChange(nextSets)
-    setSetCountInput(String(safeCount))
-  }
-
   const removeSet = (index) => {
     if (sets.length <= 1) {
       return
     }
 
-    onChange(sets.filter((_, itemIndex) => itemIndex !== index))
+    const filtered = sets.filter((_, itemIndex) => itemIndex !== index)
+    onChange(filtered)
+    setSetCountInput(String(filtered.length))
   }
 
   return (
     <div className="set-editor">
       <div className="preset-row">
         <div className="preset-input">
-          <label>Nb séries</label>
+          <label>Séries</label>
           <input
             type="number"
             min="1"
             step="1"
+            inputMode="numeric"
             value={setCountInput}
-            onChange={(event) => setSetCountInput(event.target.value)}
-            placeholder={String(currentSetCount)}
+            onChange={(event) => handleCountChange(event.target.value)}
           />
         </div>
         <div className="preset-input">
@@ -61,8 +65,9 @@ export default function SetEditor({ sets, onChange }) {
             type="number"
             min="0"
             step="0.5"
-            value={defaultWeightInput}
-            onChange={(event) => setDefaultWeightInput(event.target.value)}
+            inputMode="decimal"
+            value={defaultWeight}
+            onChange={(event) => handleWeightChange(event.target.value)}
           />
         </div>
         <div className="preset-input">
@@ -71,13 +76,11 @@ export default function SetEditor({ sets, onChange }) {
             type="number"
             min="0"
             step="1"
-            value={defaultRepsInput}
-            onChange={(event) => setDefaultRepsInput(event.target.value)}
+            inputMode="numeric"
+            value={defaultReps}
+            onChange={(event) => handleRepsChange(event.target.value)}
           />
         </div>
-        <button type="button" className="btn-secondary apply-preset" onClick={applyPreset}>
-          Appliquer
-        </button>
       </div>
 
       {sets.map((setItem, index) => (
@@ -87,6 +90,7 @@ export default function SetEditor({ sets, onChange }) {
             type="number"
             min="0"
             step="0.5"
+            inputMode="decimal"
             placeholder="Kg"
             value={setItem.weight}
             onChange={(event) => updateSet(index, 'weight', event.target.value)}
@@ -95,6 +99,7 @@ export default function SetEditor({ sets, onChange }) {
             type="number"
             min="0"
             step="1"
+            inputMode="numeric"
             placeholder="Reps"
             value={setItem.reps}
             onChange={(event) => updateSet(index, 'reps', event.target.value)}

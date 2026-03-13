@@ -6,7 +6,7 @@
 
 .preset-row {
   display: grid;
-  grid-template-columns: repeat(3, 1fr) auto;
+  grid-template-columns: repeat(3, 1fr);
   gap: 8px;
   align-items: end;
   margin-bottom: 4px;
@@ -26,10 +26,6 @@
 
 .preset-input input {
   min-width: 0;
-}
-
-.apply-preset {
-  white-space: nowrap;
 }
 
 .set-row {
@@ -55,14 +51,6 @@
 }
 
 @media (max-width: 420px) {
-  .preset-row {
-    grid-template-columns: 1fr 1fr 1fr;
-  }
-
-  .preset-row .apply-preset {
-    grid-column: 1 / -1;
-  }
-
   .preset-input label {
     font-size: 0.7rem;
   }
