@@ -25,7 +25,7 @@ function formatDateFrench(isoDate) {
 
 function parseFrenchDate(inputValue) {
   const value = inputValue.trim()
-  const datePattern = /^(\d{1,2})\/(\d{1,2})(?:\/(\d{4}))?$/
+  const datePattern = /^(\d{1,2})[/.\-](\d{1,2})(?:[/.\-](\d{4}))?$/
   const match = value.match(datePattern)
   if (!match) {
     return null
@@ -424,14 +424,14 @@ export default function Session() {
           <div className="modal card">
             {templatePromptStep === 'ask' ? (
               <>
-                <h3>Sauvegarder comme template ?</h3>
-                <p className="empty-text">Tu pourras réutiliser cette structure plus tard.</p>
+                <h3>Séance enregistrée !</h3>
+                <p className="empty-text">Veux-tu sauvegarder cette structure comme template réutilisable ?</p>
                 <div className="modal-actions">
                   <button type="button" className="btn-primary" onClick={() => setTemplatePromptStep('name')}>
-                    Oui
+                    Oui, créer un template
                   </button>
                   <button type="button" className="btn-secondary" onClick={() => navigate('/')}>
-                    Non
+                    Non merci
                   </button>
                   <button
                     type="button"
