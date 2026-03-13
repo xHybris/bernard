@@ -1,0 +1,63 @@
+.exercise-picker {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.exercise-picker h3 {
+  font-size: 1rem;
+}
+
+.show-all-groups {
+  justify-self: flex-start;
+  width: fit-content;
+  color: var(--color-primary);
+  font-size: 0.84rem;
+  font-weight: 600;
+}
+
+.exercise-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-height: 240px;
+  overflow: auto;
+}
+
+.exercise-item {
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: var(--bg-secondary);
+  border-radius: var(--radius-sm);
+  padding: 9px 12px;
+  text-align: left;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+}
+
+.exercise-item span {
+  font-size: 0.9rem;
+}
+
+.exercise-item small {
+  font-size: 0.72rem;
+  color: var(--color-text-secondary);
+}
+
+.exercise-item.selected {
+  border-color: rgba(67, 97, 238, 0.9);
+  background: rgba(67, 97, 238, 0.2);
+}
+
+.create-custom-row {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 8px;
+}
+
+.create-custom-row .btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}

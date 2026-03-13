@@ -1,0 +1,114 @@
+.session-page {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-lg);
+}
+
+.session-header {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+}
+
+.session-header .btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.session-base {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.mode-toggle {
+  display: flex;
+  gap: 8px;
+}
+
+.selected-exercises {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+}
+
+.selected-exercise-item {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.selected-exercise-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+}
+
+.selected-exercise-head h3 {
+  font-size: 1.02rem;
+}
+
+.selected-exercise-head small {
+  color: var(--color-text-secondary);
+  font-size: 0.76rem;
+}
+
+.remove-exercise {
+  color: var(--color-danger);
+}
+
+.session-feedback {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.session-feedback h3 {
+  font-size: 1rem;
+}
+
+.session-feedback textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+.save-session {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.session-error {
+  color: var(--color-danger);
+  font-size: 0.9rem;
+}
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  display: grid;
+  place-items: center;
+  z-index: 200;
+  padding: var(--spacing-md);
+}
+
+.modal {
+  width: min(440px, 100%);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.modal h3 {
+  font-size: 1.1rem;
+}
+
+.modal-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}

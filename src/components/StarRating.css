@@ -1,0 +1,15 @@
+.star-rating {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.star-btn {
+  color: var(--color-inactive);
+  display: grid;
+  place-items: center;
+}
+
+.star-btn.active {
+  color: #f3c95b;
+}

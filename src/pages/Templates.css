@@ -1,0 +1,89 @@
+.templates-page {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-lg);
+}
+
+.templates-header {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+}
+
+.templates-header .btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.template-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+}
+
+.template-name-card {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.template-name-card h3 {
+  font-size: 1rem;
+}
+
+.template-form-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.template-error {
+  color: var(--color-danger);
+  font-size: 0.9rem;
+}
+
+.templates-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.templates-list h3 {
+  font-size: 1.05rem;
+}
+
+.template-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+}
+
+.template-item h4 {
+  font-size: 1rem;
+}
+
+.template-item p {
+  color: var(--color-text-secondary);
+  font-size: 0.82rem;
+  margin-top: 2px;
+}
+
+.template-item-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.template-item-actions button {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+@media (max-width: 740px) {
+  .template-item {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}

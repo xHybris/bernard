@@ -1,0 +1,68 @@
+.set-editor {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.preset-row {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(90px, 1fr)) auto;
+  gap: 8px;
+  align-items: end;
+  margin-bottom: 4px;
+}
+
+.preset-input {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.preset-input label {
+  color: var(--color-text-secondary);
+  font-size: 0.74rem;
+}
+
+.apply-preset {
+  white-space: nowrap;
+}
+
+.set-row {
+  display: grid;
+  grid-template-columns: 86px 1fr 1fr auto;
+  gap: 8px;
+  align-items: center;
+}
+
+.set-label {
+  color: var(--color-text-secondary);
+  font-size: 0.82rem;
+}
+
+.remove-set {
+  color: var(--color-danger);
+  display: grid;
+  place-items: center;
+}
+
+@media (max-width: 560px) {
+  .preset-row {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .preset-row .apply-preset {
+    grid-column: 1 / span 2;
+  }
+
+  .set-row {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .set-label {
+    grid-column: 1 / span 2;
+  }
+
+  .remove-set {
+    justify-self: end;
+  }
+}
