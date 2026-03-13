@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react'
+import { useRef, useState } from 'react'
 import { MinusCircle } from 'lucide-react'
 import './SetEditor.css'
 
@@ -6,26 +6,35 @@ export default function SetEditor({ sets, onChange }) {
   const [setCountInput, setSetCountInput] = useState(String(Math.max(sets.length, 1)))
   const [defaultWeight, setDefaultWeight] = useState(String(sets[0]?.weight ?? ''))
   const [defaultReps, setDefaultReps] = useState(String(sets[0]?.reps ?? ''))
-
-  const buildSets = useCallback((count, weight, reps) => {
-    const parsed = Number(count)
-    const safeCount = Number.isFinite(parsed) ? Math.max(1, Math.floor(parsed)) : 1
-    return Array.from({ length: safeCount }, () => ({ weight, reps }))
-  }, [])
+  const prevWeight = useRef(defaultWeight)
+  const prevReps = useRef(defaultReps)
 
   const handleCountChange = (value) => {
     setSetCountInput(value)
-    onChange(buildSets(value, defaultWeight, defaultReps))
+    const parsed = Number(value)
+    const safeCount = Number.isFinite(parsed) ? Math.max(1, Math.floor(parsed)) : 1
+    const nextSets = Array.from({ length: safeCount }, (_, i) =>
+      i < sets.length ? sets[i] : { weight: defaultWeight, reps: defaultReps },
+    )
+    onChange(nextSets)
   }
 
   const handleWeightChange = (value) => {
+    const oldDefault = prevWeight.current
     setDefaultWeight(value)
-    onChange(buildSets(setCountInput, value, defaultReps))
+    prevWeight.current = value
+    onChange(
+      sets.map((s) => (s.weight === oldDefault ? { ...s, weight: value } : s)),
+    )
   }
 
   const handleRepsChange = (value) => {
+    const oldDefault = prevReps.current
     setDefaultReps(value)
-    onChange(buildSets(setCountInput, defaultWeight, value))
+    prevReps.current = value
+    onChange(
+      sets.map((s) => (s.reps === oldDefault ? { ...s, reps: value } : s)),
+    )
   }
 
   const updateSet = (index, key, value) => {

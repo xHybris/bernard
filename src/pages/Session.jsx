@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { ArrowLeft, Save, Trash2 } from 'lucide-react'
 import { Link, useNavigate, useParams, useSearchParams } from 'react-router-dom'
 import ExercisePicker from '../components/ExercisePicker'
@@ -57,6 +57,11 @@ function parseFrenchDate(inputValue) {
   }
 
   return `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`
+}
+
+function parseNumber(value) {
+  if (typeof value !== 'string') return Number(value)
+  return Number(value.replace(',', '.'))
 }
 
 function normalizeSession(session) {
@@ -153,6 +158,13 @@ export default function Session() {
   const [templatePromptStep, setTemplatePromptStep] = useState('closed')
   const [templateName, setTemplateName] = useState('')
   const [lastSavedExercises, setLastSavedExercises] = useState([])
+  const errorRef = useRef(null)
+
+  useEffect(() => {
+    if (formError && errorRef.current) {
+      errorRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' })
+    }
+  }, [formError])
 
   const selectedMuscleGroups =
     profile.selectedMuscleGroups?.length > 0
@@ -209,8 +221,8 @@ export default function Session() {
         ...exercise,
         sets: exercise.sets
           .map((setItem) => ({
-            weight: Number(setItem.weight),
-            reps: Number(setItem.reps),
+            weight: parseNumber(setItem.weight),
+            reps: parseNumber(setItem.reps),
           }))
           .filter(
             (setItem) =>
@@ -413,7 +425,7 @@ export default function Session() {
         </div>
       </section>
 
-      {formError && <p className="session-error">{formError}</p>}
+      {formError && <p ref={errorRef} className="session-error">{formError}</p>}
 
       <button type="button" className="btn-primary full-width save-session" onClick={saveSession}>
         <Save size={18} /> {isEditMode ? 'Enregistrer les modifications' : 'Valider la séance'}
