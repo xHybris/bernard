@@ -8,13 +8,13 @@ export default defineConfig({
     react(),
     VitePWA({
       registerType: 'autoUpdate',
-      includeAssets: ['icon-192.png', 'icon-512.png'],
+      includeAssets: ['icon-192.png', 'icon-512.png', 'icon-maskable.svg'],
       manifest: {
         name: 'Bernard',
         short_name: 'Bernard',
         description: 'Suivi de performances sportives en salle de musculation',
         theme_color: '#1A1A2E',
-        background_color: '#1A1A2E',
+        background_color: '#4361ee',
         display: 'standalone',
         start_url: '/bernard/',
         icons: [
@@ -29,15 +29,9 @@ export default defineConfig({
             type: 'image/png',
           },
           {
-            src: 'icon-192.png',
-            sizes: '192x192',
-            type: 'image/png',
-            purpose: 'maskable',
-          },
-          {
-            src: 'icon-512.png',
-            sizes: '512x512',
-            type: 'image/png',
+            src: 'icon-maskable.svg',
+            sizes: 'any',
+            type: 'image/svg+xml',
             purpose: 'maskable',
           },
         ],
